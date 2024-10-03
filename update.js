@@ -1,10 +1,14 @@
 const express = require('express');
 const Staff = require('./models/staff'); 
+const authenticateToken = require('./middleware/auth'); // Import middleware
+const checkSessionTimeout = require('./middleware/sessionTimeout'); // Import the session timeout middleware
+
+
 
 const router = express.Router();
 
 // Staff Update API
-router.put('/update', async (req, res) => {
+router.put('/update', authenticateToken, checkSessionTimeout, async (req, res) => {
   const { employeeNumber, dob, idPhoto } = req.body;
 
   // Validate input parameters

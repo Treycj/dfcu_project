@@ -1,9 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const registrationRoute = require('./register'); // Import the routes from register.js
+const registrationRouter = require('./register'); // Import the routes from register.js
 const retrieveRouter = require('./retrieve'); //Import route from retrieve.js
-const updateRouter = require('./update'); // Import the update router
+const updateRouter = require('./update'); // Import the update route
+const loginRouter = require('./login'); //Import login route
+const generateSecret = require('./generateSecret'); // Adjust the path to generateSecret.js accordingly
+
+require('dotenv').config();
 
 
 
@@ -17,10 +21,12 @@ mongoose.connect('mongodb+srv://mawandatracy:X7uKLzF2aSqjeKzt@cluster0.mzy0o.mon
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log('MongoDB connection error: ', err));
 
+
 // Use the registration routes
-app.use('/api', registrationRoute);
+app.use('/api', registrationRouter);
 app.use('/api', retrieveRouter);
 app.use('/api', updateRouter); 
+app.use('/api', loginRouter);
 
 
 
@@ -28,6 +34,9 @@ app.use('/api', updateRouter);
 app.get('/', (req, res) => {
   res.send('Welcome to DFCU HR Management API');
 });
+
+// Call the function to generate the JWT secret (if needed)
+generateSecret();
 
 // Start the server
 const PORT = process.env.PORT || 3000;

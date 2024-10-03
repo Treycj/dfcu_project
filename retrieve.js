@@ -1,10 +1,14 @@
 const express = require('express');
 const Staff = require('./models/staff'); // Assuming the Staff model is defined for the staff schema
+const authenticateToken = require('./middleware/auth'); // Import middleware
+const checkSessionTimeout = require('./middleware/sessionTimeout'); // Import the session timeout middleware
+
+
 
 const router = express.Router();
 
 // Staff Retrieval API
-router.get('/retrieve', async (req, res) => {
+router.get('/retrieve', authenticateToken,  checkSessionTimeout, async (req, res) => {
   const { employeeNumber } = req.query;
 
   try {
