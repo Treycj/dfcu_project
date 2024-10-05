@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const registrationRouter = require('./register'); // Import the routes from register.js
@@ -15,6 +16,9 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
+
+app.use(cors());
+
 
 // Database connection (replace with actual MongoDB URL)
 mongoose.connect('mongodb+srv://mawandatracy:X7uKLzF2aSqjeKzt@cluster0.mzy0o.mongodb.net/')
