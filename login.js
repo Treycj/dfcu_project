@@ -3,9 +3,7 @@ const jwt = require('jsonwebtoken');
 const Staff = require('./models/staff'); 
 const authenticateToken = require('./middleware/auth');
 
-
 const router = express.Router();
-
 
 // Login API
 router.post('/login', async (req, res) => {
@@ -24,9 +22,17 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials', code: 401 });
     }
 
+    // Check if the role exists in the staff document
+    const role = staff.role ? staff.role : 'user'; // Default to 'user' if no role is set
+
     // Generate JWT Token (access token) for staff with a 1-hour expiration
     const accessToken = jwt.sign(
-      { id: staff._id, name: staff.surname, employeeNumber: staff.employeeNumber },
+      {
+        id: staff._id,
+        name: staff.surname,
+        employeeNumber: staff.employeeNumber,
+        role: role // Include the role in the token payload
+      },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
@@ -48,4 +54,3 @@ router.post('/login', async (req, res) => {
 });
 
 module.exports = router;
-

@@ -7,7 +7,9 @@ const staffSchema = new mongoose.Schema({
   dob: { type: String, required: true },
   idPhoto: { type: String }, // Base64 string
   employeeNumber: { type: String, unique: true, required: true },
-  uniqueCode: { type: String, required: true }
+  uniqueCode: { type: String, required: true },
+  role: { type: String, default: 'user' }, // Role field, defaulting to 'user'
+
 });
 
 const Staff = mongoose.model('Staff', staffSchema);

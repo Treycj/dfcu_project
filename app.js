@@ -7,7 +7,8 @@ const retrieveRouter = require('./retrieve'); //Import route from retrieve.js
 const updateRouter = require('./update'); // Import the update route
 const loginRouter = require('./login'); //Import login route
 const generateSecret = require('./generateSecret'); // Adjust the path to generateSecret.js accordingly
-
+const performanceTracker = require('./performanceTracker'); // Path to the performance tracker file
+const authenticateAdmin = require('./middleware/adminAuth'); // Import the admin middleware
 require('dotenv').config();
 
 
@@ -16,8 +17,8 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-
 app.use(cors());
+
 
 
 // Database connection (replace with actual MongoDB URL)
@@ -31,6 +32,9 @@ app.use('/api', registrationRouter);
 app.use('/api', retrieveRouter);
 app.use('/api', updateRouter); 
 app.use('/api', loginRouter);
+app.use('/api', performanceTracker); // Mount the performance tracker at /api
+
+
 
 
 

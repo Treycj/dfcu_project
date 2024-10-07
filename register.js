@@ -14,9 +14,9 @@ const generateEmployeeNumber = () => {
   return 'EMP' + Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-// Staff Registration API
+// Staff Registration API with role
 router.post('/register', upload.single('idPhoto'), async (req, res) => {
-  const { surname, otherNames, dob, uniqueCode } = req.body;
+  const { surname, otherNames, dob, uniqueCode, role } = req.body;
   let idPhoto = '';
 
   // Mocked unique code validation
@@ -44,6 +44,10 @@ router.post('/register', upload.single('idPhoto'), async (req, res) => {
   // Generate employee number
   const employeeNumber = generateEmployeeNumber();
 
+  // Validate role (default to "user" if not provided)
+  const validRoles = ['user', 'admin'];
+  const userRole = validRoles.includes(role) ? role : 'user'; // Default to "user" if invalid role
+
   // Store the new staff in the database
   const newStaff = new Staff({
     surname,
@@ -51,17 +55,19 @@ router.post('/register', upload.single('idPhoto'), async (req, res) => {
     dob,
     idPhoto,
     employeeNumber,
-    uniqueCode
+    uniqueCode,
+    role: userRole // Save role
   });
 
   try {
     await newStaff.save();
-    
+
     // Return 201 Created with success message and status code
     return res.status(201).json({
       statusCode: 201,
       message: 'Registration successful',
-      employeeNumber
+      employeeNumber,
+      role: userRole // Return the assigned role
     });
   } catch (error) {
     // Return 500 Internal Server Error with error message and status code
