@@ -22,7 +22,7 @@ app.use(cors());
 
 
 // Database connection (replace with actual MongoDB URL)
-mongoose.connect('mongodb+srv://mawandatracy:X7uKLzF2aSqjeKzt@cluster0.mzy0o.mongodb.net/')
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log('MongoDB connection error: ', err));
 
